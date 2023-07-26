@@ -4,7 +4,7 @@ import gradio as gr
 import random
 
 # Set your OpenAI API key
-openai.api_key = "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"
+openai.api_key = "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"
 
 # Sample FAQ data for the food truck chatbot
 faq_data = {
@@ -90,9 +90,8 @@ chatbot_interface = gr.Interface(
     outputs=gr.outputs.Textbox(),
     live=True,
     capture_session=True
+
 )
-
 # Run the interface
-chatbot_interface.launch()
-
+chatbot_interface.launch(share=True)
 
