@@ -1,0 +1,98 @@
+import os
+import openai
+import gradio as gr
+import random
+
+# Set your OpenAI API key
+openai.api_key = "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"
+
+# Sample FAQ data for the food truck chatbot
+faq_data = {
+    "What is the price of coffee?": [
+        "The price of our artisan coffee is $3.50.",
+        "Our coffee is priced at $3.50 per cup.",
+        "A cup of our artisan coffee costs $3.50."
+    ],
+    "What flavors of croissants do you have?": [
+        "We offer plain, chocolate, and almond croissants.",
+        "Our croissant flavors include plain, chocolate, and almond.",
+        "You can choose from plain, chocolate, and almond croissants."
+    ],
+    "Do you have any vegan options?": [
+        "Yes, we have vegan croissants available upon request.",
+        "We do offer vegan croissants upon request.",
+        "Sure! We can provide vegan croissants on request."
+    ],
+    "What are your working hours?": [
+        "We are open from 8 AM to 8 PM every day.",
+        "Our operating hours are from 8 AM to 8 PM daily.",
+        "You can visit us any day between 8 AM and 8 PM."
+    ],
+    "Where can I find your food truck?": [
+        "Our food truck travels around the country. You can check our website for the current location.",
+        "Our food truck roams around the country. For the latest location, visit our website.",
+        "You can find our food truck in different locations across the country. Check our website for the current location."
+    ],
+    "Can I place a catering order for an event?": [
+        "Absolutely! Please reach out to us through our website or contact number to discuss catering options.",
+        "Sure! To arrange catering for your event, contact us via our website or phone.",
+        "Yes, we provide catering services. Feel free to contact us for more information."
+    ],
+    "Do you offer any discounts or loyalty programs?": [
+        "Yes, we have loyalty programs for regular customers and occasional discounts. Follow us on social media for updates.",
+        "We offer loyalty programs and occasional discounts. Stay updated by following us on social media.",
+        "Certainly! We have loyalty programs and discounts. Keep an eye on our social media for updates."
+    ],
+    "Are your coffee beans ethically sourced?": [
+        "Yes, we take pride in sourcing our coffee beans ethically and sustainably.",
+        "We ensure our coffee beans are ethically and sustainably sourced.",
+        "Absolutely! Our coffee beans are sourced ethically and sustainably."
+    ],
+    "Do you have any gluten-free options?": [
+        "Unfortunately, our croissants contain gluten, but we plan to introduce gluten-free options in the future.",
+        "Currently, our croissants contain gluten. However, we are working on introducing gluten-free options soon.",
+        "At the moment, our croissants contain gluten. We are actively working on providing gluten-free options in the near future."
+    ],
+    "What makes your coffee special?": [
+        "Our artisan coffee is made from carefully selected beans and expertly crafted to deliver a rich and unique flavor.",
+        "Our coffee is crafted with care, using select beans, to provide a distinct and rich flavor.",
+        "Our artisan coffee is special because we select premium beans and carefully craft each cup for a unique flavor experience."
+    ],
+    "Can I customize my coffee order?": [
+        "Certainly! You can customize your coffee order with various milk options and sweeteners.",
+        "Of course! Feel free to customize your coffee with different milk options and sweeteners.",
+        "Yes, you can customize your coffee with a variety of milk and sweetener options."
+    ],
+    "Are you available in [specific city] today?": [
+        "Our food truck's schedule changes daily. Please check our website or social media for today's location.",
+        "As our food truck moves daily, we recommend checking our website or social media for today's location.",
+        "The food truck's location changes daily. Check our website or social media for the current schedule."
+    ],
+}
+
+def is_greeting(input_text):
+    greetings = ["hello", "hi", "hey", "hola", "good morning", "good afternoon", "good evening"]
+    return any(greeting in input_text.lower() for greeting in greetings)
+
+def chatbot_response(question):
+    # Handle greetings
+    if is_greeting(question):
+        return random.choice(["Hello!", "Hi there!", "Hey!", "Greetings!", "Hello! How can I assist you?"])
+
+    # Search for the question in the FAQ data
+    responses = faq_data.get(question, ["I'm sorry, but I don't have an answer to that question."])
+    return random.choice(responses)
+
+# Create the Gradio interface
+chatbot_interface = gr.Interface(
+    fn=chatbot_response, 
+    inputs=gr.inputs.Textbox(), 
+    outputs=gr.outputs.Textbox(),
+    live=True,
+    capture_session=True
+)
+
+# Run the interface
+chatbot_interface.launch()
+
+
